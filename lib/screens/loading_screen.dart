@@ -3,6 +3,7 @@ import 'package:clima/services/networking.dart';
 import 'package:clima/utilities/weather_data.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -11,11 +12,12 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   WeatherData weatherData;
+  bool isLoading = true;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    isLoading = true;
     getLocationAndData();
   }
 
@@ -24,20 +26,33 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Position position = await Location.getLocation();
     WeatherData weatherData = await FetchData.getData(position);
     setState(() {
-      this.weatherData = weatherData;
+      isLoading = false;
     });
+    Navigator.pushNamed(context, '/location', arguments: weatherData);
+  }
+
+  Widget renderSpinner() {
+    return SpinKitRotatingPlain(
+      itemBuilder: (_, int index) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: index.isEven ? Colors.red : Colors.green,
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            getLocationAndData();
-          },
-          child: Text('Get Location'),
-        ),
+        child: isLoading
+            ? renderSpinner()
+            : Container(
+                height: 0,
+                width: 0,
+              ),
       ),
     );
   }
