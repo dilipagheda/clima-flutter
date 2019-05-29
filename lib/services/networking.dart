@@ -7,9 +7,8 @@ import 'package:http/http.dart' as http;
 class FetchData {
   static Future<WeatherData> getData(Position position) async {
     String url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$API_KEY';
+        'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$API_KEY&units=imperial';
 
-    // Await the http get response, then decode the json-formatted responce.
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
