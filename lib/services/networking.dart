@@ -15,7 +15,7 @@ class FetchData {
       var jsonResponse = convert.jsonDecode(response.body);
       return WeatherData(
           condition: jsonResponse['weather'][0]['id'],
-          temp: (jsonResponse['main']['temp'] as double).ceil(),
+          temp: (jsonResponse['main']['temp']).ceil(),
           city: jsonResponse['name'],
           code: 200,
           message: "");
@@ -35,7 +35,7 @@ class FetchData {
       var jsonResponse = convert.jsonDecode(response.body);
       return WeatherData(
           condition: jsonResponse['weather'][0]['id'],
-          temp: (jsonResponse['main']['temp'] as double).ceil(),
+          temp: (jsonResponse['main']['temp']).ceil(),
           city: jsonResponse['name'],
           code: 200,
           message: "");
